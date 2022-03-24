@@ -1,7 +1,8 @@
-﻿using DapperProject.Entity;
+﻿using Dapper;
+using DapperProject.Entity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace DapperProject.Data.Service
@@ -16,6 +17,17 @@ namespace DapperProject.Data.Service
         {
             return await DeleteAsync(id);
         }
+
+        public async Task<Products> GetFilterProducts(Expression<Func<Products, bool>> filter)
+        {
+            return await GetFilter(filter);
+        }
+
+        public async Task<List<Products>> GetFilterProductsAll(Expression<Func<Products, bool>> filter)
+        {
+            return await GetFilterAll(filter);
+        }
+
         public async Task<IEnumerable<Products>> GetProductsAsync()
         {
             return await FindAllAsync();
@@ -34,6 +46,16 @@ namespace DapperProject.Data.Service
         public async Task<bool> UpdateProductsAsync(Products products)
         {
             return await UpdateAsync(products);
+        }
+
+        public async Task<int> ProductsStoredProcedure(string storedProcedure, DynamicParameters dynamicParameters)
+        {
+            return await GetStoredProcedure(storedProcedure, dynamicParameters);
+        }
+
+        public async Task<List<Products>> GetQueryProducts(string query)
+        {
+            return await GetQueryAll(query);
         }
     }
 }
